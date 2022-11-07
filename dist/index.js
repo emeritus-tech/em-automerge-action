@@ -98,7 +98,7 @@ async function executeGitHubActionImpl(context, eventName, eventData) {
   if (context.config.pullRequest != null) {
     return await handleArbitraryPullRequestUpdate(context, eventData);
   } else if (["push"].includes(eventName)) {
-    await handleBaseBranchUpdate(context, eventName, eventData);
+    return await handleBaseBranchUpdate(context, eventName, eventData);
   } else if (["status"].includes(eventName)) {
     return await handleStatusUpdate(context, eventName, eventData);
   } else if (["pull_request", "pull_request_target"].includes(eventName)) {
@@ -322,7 +322,7 @@ async function handleBaseBranchUpdate(context, eventName, event) {
   const branch = branchName(ref);
   if (!branch) {
     logger.info("Push does not reference a branch:", ref);
-    return;
+    return 'something';
   }
 
   logger.debug("Updated branch:", branch);
@@ -346,7 +346,7 @@ async function handleBaseBranchUpdate(context, eventName, event) {
     logger.info("Open PRs:", pullRequests.length);
   } else {
     logger.info("No open PRs for", branch);
-    return;
+    return 'something';
   }
 
   let updated = 0;
@@ -364,6 +364,8 @@ async function handleBaseBranchUpdate(context, eventName, event) {
   } else {
     logger.info("No PRs based on", branch, "have been updated");
   }
+
+  return 'something';
 }
 
 async function handleWorkflowDispatch(context, eventName, event) {
@@ -22095,7 +22097,7 @@ module.exports = JSON.parse('[[[0,44],"disallowed_STD3_valid"],[[45,46],"valid"]
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"name":"automerge-action","version":"0.15.2","description":"GitHub action to automatically merge pull requests","main":"lib/api.js","author":"Pascal","license":"MIT","private":true,"bin":{"automerge-action":"./bin/automerge.js"},"scripts":{"test":"jest","it":"node it/it.js","lint":"prettier -l lib/** test/** && eslint .","compile":"ncc build bin/automerge.js --license LICENSE -o dist","prepublish":"yarn lint && yarn test && yarn compile"},"dependencies":{"@actions/core":"^1.6.0","@octokit/rest":"^18.12.0","argparse":"^2.0.1","fs-extra":"^10.0.1","object-resolve-path":"^1.1.1","tmp":"^0.2.1"},"devDependencies":{"@vercel/ncc":"^0.33.3","dotenv":"^16.0.0","eslint":"^8.11.0","eslint-plugin-jest":"^26.1.3","jest":"^27.5.1","prettier":"^2.6.0"},"prettier":{"trailingComma":"none","arrowParens":"avoid"}}');
+module.exports = JSON.parse('{"name":"automerge-action","version":"0.15.4","description":"GitHub action to automatically merge pull requests","main":"lib/api.js","author":"Pascal","license":"MIT","private":true,"bin":{"automerge-action":"./bin/automerge.js"},"scripts":{"test":"jest","it":"node it/it.js","lint":"prettier -l lib/** test/** && eslint .","compile":"ncc build bin/automerge.js --license LICENSE -o dist","prepublish":"yarn lint && yarn test && yarn compile"},"dependencies":{"@actions/core":"^1.6.0","@octokit/rest":"^18.12.0","argparse":"^2.0.1","fs-extra":"^10.0.1","object-resolve-path":"^1.1.1","tmp":"^0.2.1"},"devDependencies":{"@vercel/ncc":"^0.33.3","dotenv":"^16.0.0","eslint":"^8.11.0","eslint-plugin-jest":"^26.1.3","jest":"^27.5.1","prettier":"^2.6.0"},"prettier":{"trailingComma":"none","arrowParens":"avoid"}}');
 
 /***/ })
 
